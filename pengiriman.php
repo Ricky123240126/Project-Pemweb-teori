@@ -38,32 +38,55 @@ $result = mysqli_query($connection, $sql);
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-info mb-4">
+    <nav class="navbar navbar-expand-lg bg-info">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.php">Inventory System</a>
-            <div class="collapse navbar-collapse">
+            <a class="navbar-brand" href="#">Pengelola inventori</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="pemasok.php">Daftar Pemasok</a></li>
-                    <li class="nav-item"><a class="nav-link" href="daftar_barang.php">Detail Barang</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="pengiriman.php">Pengiriman</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="distributor.php">Daftar Distributor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pemasok.php">Daftar Pemasok</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="daftar_barang.php">Detail Barang</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="pengiriman.php">Pengiriman</a>
+                    </li>
+                    <div class="dropdown">
+                        <button
+                            class="btn btn-link text-white text-decoration-none dropdown-toggle d-flex align-items-center"
+                            data-bs-toggle="dropdown">
+                            <span class="fw-medium"><?php echo htmlspecialchars($_SESSION['role']); ?></span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2"
+                            style="border-radius: 12px;">
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 text-danger" href="logout.php">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Keluar
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="delete_akun.php"
+                                    onclick="return confirm('Yakin mau hapus akun? Semua data akan hilang!');">
+                                    <i class="bi bi-trash me-2"></i>Hapus Akun
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </ul>
             </div>
-            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="border-radius: 12px;">
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li>
-                    <a class="dropdown-item py-2 text-danger" href="logout.php">
-                        <i class="bi bi-box-arrow-right me-2"></i>Keluar
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item text-danger" href="delete_akun.php"
-                        onclick="return confirm('Yakin mau hapus akun? Semua data akan hilang!');">
-                        <i class="bi bi-trash me-2"></i>Hapus Akun
-                    </a>
-                </li>
-            </ul>
         </div>
     </nav>
 
@@ -116,6 +139,11 @@ $result = mysqli_query($connection, $sql);
             </tbody>
         </table>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
 </body>
 
 </html>
