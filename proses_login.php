@@ -28,13 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             header("Location: dashboard.php");
             exit();
         } else {
-            $_SESSION['error'] = "Password salah!";
+            echo "<script>alert('Password salah!'); window.location='login.php';</script>";
         }
     } else {
-        echo "<br><strong style='color:red;'>USERNAME TIDAK DITEMUKAN!</strong><br>";
-        $_SESSION['error'] = "Username tidak ditemukan!";
-        echo "<a href='login.php'>Kembali ke login</a>";
+            echo "<script>alert('username tidak ditemukan!'); window.location='login.php';</script>";
     }
-} else {
-    echo "<a href='login.php'>Kembali ke login</a>";
-}
+} 
+?>
