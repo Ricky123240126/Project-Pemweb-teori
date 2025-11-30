@@ -7,12 +7,14 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+$sql = "SELECT barang.*, pemasok.nama_pemasok 
+        FROM barang 
+        JOIN pemasok ON barang.id_pemasok = pemasok.id_pemasok";
+
 $search = "";
 if (isset($_GET['search'])) {
     $search = $_GET['search'];
-    $sql = "SELECT * FROM barang WHERE nama_pemasok LIKE '%$search%' OR nama_barang LIKE '%$search%' ";
-} else {
-    $sql = "SELECT * FROM barang";
+    $sql .= " WHERE barang.nama_barang LIKE '%$search%' OR pemasok.nama_pemasok LIKE '%$search%'";
 }
 $result = mysqli_query($connection, $sql);
 ?>
@@ -93,10 +95,10 @@ $result = mysqli_query($connection, $sql);
         <h2>Daftar Barang</h2>
 
         <form action="" method="GET" class="mb-3 d-flex gap-2">
-            <input type="text" name="search" class="form-control w-25" placeholder="Cari pemasok..."
+            <input type="text" name="search" class="form-control w-25" placeholder="Cari barang..."
                 value="<?php echo $search; ?>">
             <button type="submit" class="btn btn-primary">Cari</button>
-            <a href="pemasok.php" class="btn btn-secondary">Reset</a>
+            <a href="daftar_barang.php" class="btn btn-secondary">Reset</a>
         </form>
 
         <a href="tambah_barang.php" class="btn btn-success mb-3">+ Tambah Barang</a>
@@ -105,10 +107,11 @@ $result = mysqli_query($connection, $sql);
             <thead>
                 <tr>
                     <th>ID Barang</th>
+                    <th>ID Pemasok</th>
                     <th>Nama Barang</th>
+                    <th>Nama Pemasok</th>
                     <th>Jumlah Barang</th>
                     <th>Tanggal Diterima</th>
-                    <th>Nama Pemasok</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -116,14 +119,14 @@ $result = mysqli_query($connection, $sql);
                 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                     <tr>
                         <td><?= $row['id_barang']; ?></td>
+                        <td><?= $row['id_pemasok']; ?></td>
                         <td><?= $row['nama_barang']; ?></td>
+                        <td><?= $row['nama_pemasok']; ?></td>
                         <td><?= $row['jumlah_barang']; ?></td>
                         <td><?= $row['tanggal_diterima']; ?></td>
-                        <td><?= $row['nama_pemasok']; ?></td>
-                        <td><?= $row['alamat_pemasok']; ?></td>
                         <td>
                             <a href="edit_barang.php?id=<?= $row['id_barang']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="hapus_pemasok.php?id=<?= $row['id_barang']; ?>" class="btn btn-danger btn-sm"
+                            <a href="hapus_barang.php?id=<?= $row['id_barang']; ?>" class="btn btn-danger btn-sm"
                                 onclick="return confirm('Yakin hapus?');">Hapus</a>
                         </td>
                     </tr>

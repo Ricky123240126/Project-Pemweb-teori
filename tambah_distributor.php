@@ -7,25 +7,19 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$query_pemasok = "SELECT * FROM pemasok ORDER BY nama_pemasok ASC";
-$result_pemasok = mysqli_query($connection, $query_pemasok);
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $barang = $_POST['barang'];
-    $jumlah = $_POST['jumlah'];
-    $tanggal = $_POST['tanggal'];
-    $pemasok = $_POST['id_pemasok'];
+    $nama_distributor = $_POST['distributor'];
 
-    $sql = "INSERT INTO barang (nama_barang, jumlah_barang, tanggal_diterima, id_pemasok) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO pemasok (nama_distributor) VALUES (?)";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('sisi', $barang, $jumlah, $tanggal, $pemasok);
+    $stmt->bind_param('s', $nama_distributor, $alamat_pemasok);
 
-    if ($stmt->execute()) {
-        echo "<script>alert('Berhasil menambah data barang!'); window.location='daftar_barang.php';</script>";
+    if($stmt->execute()){
+        echo "<script>alert('Berhasil menambah data distributor!'); window.location='distributor.php';</script>";
     } else {
-        echo "<script>alert('Gagal menambah data barang!'); window.location='tambah_barang.php';</script>";
-
-    }
+        echo "<script>alert('Gagal menambah data distributor!'); window.location='tambah_distributor.php';</script>";
+        
+    } 
 }
 
 ?>
@@ -77,34 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="back">
         <div class="div-center">
             <div class="content">
-                <h3>Input data Barang</h3>
+                <h3>Input data distributor</h3>
                 <hr />
                 <form method="post">
                     <div class="form-group mb-2">
-                        <label for="exampleInputBarang1">Nama Barang:</label>
-                        <input type="text" class="form-control" name="barang" id="exampleInputBarang1">
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="exampleInputJumlah1">Jumlah Barang:</label>
-                        <input type="number" class="form-control" name="jumlah" id="exampleInputJumlah1">
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="exampleInputPemasok1">Tanggal diterima:</label>
-                        <input type="date" class="form-control" name="tanggal" id="exampleInputTanggal1">
-                    </div>
-                    <div class="mb-3">
-                        <label>Pilih Pemasok:</label>
-                        <select class="form-select" name="id_pemasok" required>
-                            <option value="">-- Silakan Pilih --</option>
-                            <?php while ($row = mysqli_fetch_assoc($result_pemasok)) { ?>
-                                <option value="<?= $row['id_pemasok'] ?>">
-                                    <?= $row['nama_pemasok'] ?>
-                                </option>
-                            <?php } ?>
-                        </select>
+                        <label for="exampleInputPemasok1">Nama distributor:</label>
+                        <input type="text" class="form-control" name="distributor" id="exampleInputDistributor1">
                     </div>
                     <button type="submit" class="btn btn-primary w-100 fw-bold">Konfirmasi</button>
-                    <a href="daftar_barang.php" class="btn btn-outline-primary btn-sm w-100 mt-3">
+                    <a href="pemasok.php" class="btn btn-outline-primary btn-sm w-100 mt-3">
                         <i class="bi bi-pencil me-1"></i> kembali
                     </a>
                 </form>

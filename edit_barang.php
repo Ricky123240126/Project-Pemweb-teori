@@ -2,27 +2,49 @@
 include 'connect.php';
 session_start();
 
-$id = $_GET['id'];
+
+if (!isset($_SESSION['username'])) {
+    header('location: login.php');
+    exit();
+}
+
+if (!isset($_GET['id'])) {
+    header('Location: daftar_barang.php');
+    exit();
+}
+
+$id_barang = $_GET['id'];
 $sql = "SELECT * FROM barang WHERE id_barang = ?";
 $stmt = $connection->prepare($sql);
-$stmt->bind_param('i', $id);
+$stmt->bind_param('i', $id_barang);
 $stmt->execute();
 $result = $stmt->get_result();
-$data = $result->fetch_assoc();
+$data_barang = $result->fetch_assoc();
+
+if (!$data_barang) {
+    echo "<script>alert('Data tidak ditemukan!'); window.location='daftar_barang.php';</script>";
+    exit();
+}
+
+$query_pemasok = "SELECT * FROM pemasok ORDER BY nama_pemasok ASC";
+$result_pemasok = mysqli_query($connection, $query_pemasok);
+
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $update_barang = $_POST['barangU'];
-    $update_jumlah = $_POST['jumlahU'];
-    $update_tanggal = $_POST['tanggalU'];
-    $update_pemasok = $_POST['pemasokU'];
-    
-    $sql = "UPDATE barang SET nama_barang=?, jumlah_barang=?, tanggal_diterima=?, nama_pemasok=?  WHERE id_pemasok=?";
-    $stmt = $connection->prepare($sql);
-    $stmt->bind_param("sidsi", $update_barang, $update_jumlah, $update_tanggal, $update_pemasok, $id);
-    if ($stmt->execute()) {
+    $nama_barang = $_POST['nama_barang'];
+    $jumlah_barang = $_POST['jumlah_barang'];
+    $tanggal_diterima = $_POST['tanggal_diterima'];
+    $id_pemasok = $_POST['id_pemasok'];
+
+    $sql_update = "UPDATE barang SET nama_barang=?, jumlah_barang=?, tanggal_diterima=?, id_pemasok=? WHERE id_barang=?";
+
+    $stmt_update = $connection->prepare($sql_update);
+    $stmt_update->bind_param("sisii", $nama_barang, $jumlah_barang, $tanggal_diterima, $id_pemasok, $id_barang);
+
+    if ($stmt_update->execute()) {
         echo "<script>alert('Berhasil update data barang!'); window.location='daftar_barang.php';</script>";
     } else {
-        echo "<script>alert('gagal update data barang!'); window.location='edit_barang.php';</script>";
+        echo "<script>alert('Gagal update! Error: " . $stmt_update->error . "'); window.location='edit_barang.php?id=$id_barang';</script>";
     }
 }
 ?>
@@ -33,9 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>tambah pemasok</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Edit Barang</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .back {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -46,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         .div-center {
-            width: 800px;
-            height: 400px;
+            width: 600px;
+            padding: 30px;
             background-color: #fff;
             position: absolute;
             left: 0;
@@ -55,17 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             top: 0;
             bottom: 0;
             margin: auto;
-            max-width: 100%;
-            max-height: 100%;
-            overflow: auto;
-            padding: 1em 2em;
-            border-bottom: 2px solid #ccc;
-            display: table;
-        }
-
-        div.content {
-            display: table-cell;
-            vertical-align: middle;
+            height: fit-content;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -73,37 +86,50 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <body>
     <div class="back">
         <div class="div-center">
-            <div class="content">
-                <h3>Edit data pemasok </h3>
-                <hr />
-                <form method="post">
-                    <div class="form-group mb-2">
-                        <label for="exampleInputBarang1">Nama Barang:</label>
-                        <input type="text" class="form-control" name="barangU" id="exampleInputBarang1">
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="exampleInputJumlah1">Jumlah Barang:</label>
-                        <input type="number" class="form-control" name="jumlahU" id="exampleInputJumlah1">
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="exampleInputPemasok1">Tanggal diterima:</label>
-                        <input type="date" class="form-control" name="tanggalU" id="exampleInputTanggal1">
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="exampleInputAlamat1">Nama pemasok:</label>
-                        <input type="text" class="form-control" name="pemasokU" id="exampleInputPemasok1">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100 fw-bold">Konfirmasi</button>
-                    <a href="daftar_barang.php" class="btn btn-outline-primary btn-sm w-100 mt-3">
-                        <i class="bi bi-pencil me-1"></i> kembali
-                    </a>
-                </form>
-            </div>
-            </span>
+            <h3 class="mb-4">Edit Data Barang</h3>
+            <form method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">Nama Barang:</label>
+                    <!-- Perhatikan atribut value="..." untuk menampilkan data lama -->
+                    <input type="text" class="form-control" name="nama_barang"
+                        value="<?php echo $data_barang['nama_barang']; ?>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Jumlah Barang:</label>
+                    <input type="number" class="form-control" name="jumlah_barang"
+                        value="<?php echo $data_barang['jumlah_barang']; ?>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tanggal Diterima:</label>
+                    <input type="date" class="form-control" name="tanggal_diterima"
+                        value="<?php echo $data_barang['tanggal_diterima']; ?>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nama Pemasok:</label>
+                    <select class="form-select" name="id_pemasok" required>
+                        <option value="">-- Pilih Pemasok --</option>
+                        <?php while ($p = mysqli_fetch_assoc($result_pemasok)) {
+                            $selected = ($p['id_pemasok'] == $data_barang['id_pemasok']) ? 'selected' : '';
+                            ?>
+                            <option value="<?= $p['id_pemasok'] ?>" <?= $selected ?>>
+                                <?= $p['nama_pemasok'] ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary fw-bold">Simpan Perubahan</button>
+                    <a href="daftar_barang.php" class="btn btn-outline-secondary">Kembali</a>
+                </div>
+            </form>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-            crossorigin="anonymous"></script>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
