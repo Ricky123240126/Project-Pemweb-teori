@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama_pemasok = $_POST['pemasok'];
     $alamat_pemasok = $_POST['alamat'];
 
-    $sql = "UPDATE pemasok SET nama_pemasok=?, alamat_pemasok=?";
+    $sql = "INSERT INTO pemasok (nama_pemasok, alamat_pemasok) VALUES (?, ?)";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param('ss', $nama_pemasok, $alamat_pemasok);
 

@@ -7,7 +7,6 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Logika Search
 $search = "";
 if (isset($_GET['search'])) {
     $search = $_GET['search'];
@@ -55,7 +54,7 @@ $result = mysqli_query($connection, $sql);
                         <a class="nav-link" href="pemasok.php">Daftar Pemasok</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="barang.php">Detail Barang</a>
+                        <a class="nav-link" href="daftar_barang.php">Detail Barang</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="pengiriman.php">Pengiriman</a>

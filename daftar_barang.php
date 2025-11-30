@@ -1,14 +1,20 @@
 <?php
+include 'connect.php';
 session_start();
 
-if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
-    echo "<script>alert('Anda dilarang halaman admin!'); window.location='login.php';</script>";
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
     exit();
 }
-// if (isset($_SESSION['error'])) {
-//     echo "<div style='color: red; text-align:center;'>".$_SESSION['error']."</div>";
-//     unset($_SESSION['error']); // Hapus setelah ditampilkan
-// }
+
+$search = "";
+if (isset($_GET['search'])) {
+    $search = $_GET['search'];
+    $sql = "SELECT * FROM barang WHERE nama_pemasok LIKE '%$search%' OR nama_barang LIKE '%$search%' ";
+} else {
+    $sql = "SELECT * FROM barang";
+}
+$result = mysqli_query($connection, $sql);
 ?>
 
 <!doctype html>
@@ -17,17 +23,19 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Data Pemasok</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .dropdown {
             margin-left: 700px;
         }
+        body {
+            background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
+        }
     </style>
-
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg bg-info">
         <div class="container-fluid">
@@ -46,7 +54,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
                         <a class="nav-link" href="pemasok.php">Daftar Pemasok</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="daftar_barang.php">Detail Barang</a>
+                        <a class="nav-link" href="barang.php">Detail Barang</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="pengiriman.php">Pengiriman</a>
@@ -80,6 +88,49 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
             </div>
         </div>
     </nav>
+
+    <div class="container p-5 my-5 border ">
+        <h2>Daftar Barang</h2>
+
+        <form action="" method="GET" class="mb-3 d-flex gap-2">
+            <input type="text" name="search" class="form-control w-25" placeholder="Cari pemasok..."
+                value="<?php echo $search; ?>">
+            <button type="submit" class="btn btn-primary">Cari</button>
+            <a href="pemasok.php" class="btn btn-secondary">Reset</a>
+        </form>
+
+        <a href="tambah_barang.php" class="btn btn-success mb-3">+ Tambah Barang</a>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID Barang</th>
+                    <th>Nama Barang</th>
+                    <th>Jumlah Barang</th>
+                    <th>Tanggal Diterima</th>
+                    <th>Nama Pemasok</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                    <tr>
+                        <td><?= $row['id_barang']; ?></td>
+                        <td><?= $row['nama_barang']; ?></td>
+                        <td><?= $row['jumlah_barang']; ?></td>
+                        <td><?= $row['tanggal_diterima']; ?></td>
+                        <td><?= $row['nama_pemasok']; ?></td>
+                        <td><?= $row['alamat_pemasok']; ?></td>
+                        <td>
+                            <a href="edit_barang.php?id=<?= $row['id_barang']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="hapus_pemasok.php?id=<?= $row['id_barang']; ?>" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin hapus?');">Hapus</a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>

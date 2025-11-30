@@ -3,7 +3,7 @@ include 'connect.php';
 session_start();
 
 $id = $_GET['id'];
-$sql = "SELECT * FROM pemasok WHERE id_pemasok = ?";
+$sql = "SELECT * FROM barang WHERE id_barang = ?";
 $stmt = $connection->prepare($sql);
 $stmt->bind_param('i', $id);
 $stmt->execute();
@@ -11,16 +11,18 @@ $result = $stmt->get_result();
 $data = $result->fetch_assoc();
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $update_nama = $_POST['pemasokU'];
-    $update_alamat = $_POST['alamatU'];
+    $update_barang = $_POST['barangU'];
+    $update_jumlah = $_POST['jumlahU'];
+    $update_tanggal = $_POST['tanggalU'];
+    $update_pemasok = $_POST['pemasokU'];
     
-    $sql = "UPDATE pemasok SET nama_pemasok=?, alamat_pemasok=? WHERE id_pemasok=?";
+    $sql = "UPDATE barang SET nama_barang=?, jumlah_barang=?, tanggal_diterima=?, nama_pemasok=?  WHERE id_pemasok=?";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param("ssi", $update_nama, $update_alamat, $id);
+    $stmt->bind_param("sidsi", $update_barang, $update_jumlah, $update_tanggal, $update_pemasok, $id);
     if ($stmt->execute()) {
-        echo "<script>alert('Berhasil update data pemasok!'); window.location='pemasok.php';</script>";
+        echo "<script>alert('Berhasil update data barang!'); window.location='daftar_barang.php';</script>";
     } else {
-        echo "<script>alert('gagal update data pemasok!'); window.location='edit_pemasok.php';</script>";
+        echo "<script>alert('gagal update data barang!'); window.location='edit_barang.php';</script>";
     }
 }
 ?>
@@ -76,15 +78,23 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <hr />
                 <form method="post">
                     <div class="form-group mb-2">
-                        <label for="exampleInputNominal1">Nama pemasok:</label>
-                        <input type="text" class="form-control" name="pemasokU" id="exampleInputPemasok1" value="<?= $data['nama_pemasok']; ?>">
+                        <label for="exampleInputBarang1">Nama Barang:</label>
+                        <input type="text" class="form-control" name="barangU" id="exampleInputBarang1">
                     </div>
                     <div class="form-group mb-2">
-                        <label for="exampleInputNominal1">alamat pemasok:</label>
-                        <input type="text" class="form-control" name="alamatU" id="exampleInputAlamat1" value="<?= $data['alamat_pemasok']; ?>">
+                        <label for="exampleInputJumlah1">Jumlah Barang:</label>
+                        <input type="number" class="form-control" name="jumlahU" id="exampleInputJumlah1">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="exampleInputPemasok1">Tanggal diterima:</label>
+                        <input type="date" class="form-control" name="tanggalU" id="exampleInputTanggal1">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="exampleInputAlamat1">Nama pemasok:</label>
+                        <input type="text" class="form-control" name="pemasokU" id="exampleInputPemasok1">
                     </div>
                     <button type="submit" class="btn btn-primary w-100 fw-bold">Konfirmasi</button>
-                    <a href="pemasok.php" class="btn btn-outline-primary btn-sm w-100 mt-3">
+                    <a href="daftar_barang.php" class="btn btn-outline-primary btn-sm w-100 mt-3">
                         <i class="bi bi-pencil me-1"></i> kembali
                     </a>
                 </form>
