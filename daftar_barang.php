@@ -31,6 +31,7 @@ $result = mysqli_query($connection, $sql);
         .dropdown {
             margin-left: 700px;
         }
+
         body {
             background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
@@ -131,6 +132,11 @@ $result = mysqli_query($connection, $sql);
                         </td>
                     </tr>
                 <?php } ?>
+                <?php if (mysqli_num_rows($result) == 0): ?>
+                    <tr>
+                        <td colspan="7" class="text-center">Belum ada data barang.</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

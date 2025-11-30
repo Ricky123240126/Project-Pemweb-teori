@@ -29,6 +29,7 @@ $result = mysqli_query($connection, $sql);
         .dropdown {
             margin-left: 700px;
         }
+
         body {
             background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
@@ -115,12 +116,18 @@ $result = mysqli_query($connection, $sql);
                         <td><?= $row['id_distributor']; ?></td>
                         <td><?= $row['nama_pemasok']; ?></td>
                         <td>
-                            <a href="edit_distributor.php?id=<?= $row['id_distributor']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="edit_distributor.php?id=<?= $row['id_distributor']; ?>"
+                                class="btn btn-warning btn-sm">Edit</a>
                             <a href="hapus_distributor.php?id=<?= $row['id_distributor']; ?>" class="btn btn-danger btn-sm"
                                 onclick="return confirm('Yakin hapus?');">Hapus</a>
                         </td>
                     </tr>
                 <?php } ?>
+                <?php if (mysqli_num_rows($result) == 0): ?>
+                    <tr>
+                        <td colspan="7" class="text-center">Belum ada data distributor.</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
