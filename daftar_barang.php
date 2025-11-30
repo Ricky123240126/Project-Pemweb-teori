@@ -57,7 +57,7 @@ $result = mysqli_query($connection, $sql);
                         <a class="nav-link" href="pemasok.php">Daftar Pemasok</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="barang.php">Detail Barang</a>
+                        <a class="nav-link active" href="barang.php">Detail Barang</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="pengiriman.php">Pengiriman</a>

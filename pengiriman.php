@@ -30,6 +30,11 @@ $result = mysqli_query($connection, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Data Pengiriman</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .dropdown {
+            margin-left: 700px;
+        }
+    </style>
 </head>
 
 <body>
@@ -38,7 +43,6 @@ $result = mysqli_query($connection, $sql);
             <a class="navbar-brand" href="dashboard.php">Inventory System</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="pemasok.php">Daftar Pemasok</a></li>
                     <li class="nav-item"><a class="nav-link" href="daftar_barang.php">Detail Barang</a></li>
                     <li class="nav-item"><a class="nav-link active" href="pengiriman.php">Pengiriman</a></li>
@@ -63,11 +67,11 @@ $result = mysqli_query($connection, $sql);
             <thead class="table-dark">
                 <tr>
                     <th>ID Pengiriman</th>
-                    <th>ID Barang</th> 
+                    <th>ID Barang</th>
                     <th>Nama Barang</th>
                     <th>Tanggal Kirim</th>
                     <th>Jumlah</th>
-                    <th>Tujuan Distributor</th> 
+                    <th>Tujuan Distributor</th>
                     <th>Aksi</th>
                 </tr>
             </thead>

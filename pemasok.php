@@ -52,7 +52,7 @@ $result = mysqli_query($connection, $sql);
                         <a class="nav-link" href="distributor.php">Daftar Distributor</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pemasok.php">Daftar Pemasok</a>
+                        <a class="nav-link active" href="pemasok.php">Daftar Pemasok</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="daftar_barang.php">Detail Barang</a>
