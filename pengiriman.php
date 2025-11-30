@@ -48,6 +48,22 @@ $result = mysqli_query($connection, $sql);
                     <li class="nav-item"><a class="nav-link active" href="pengiriman.php">Pengiriman</a></li>
                 </ul>
             </div>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="border-radius: 12px;">
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a class="dropdown-item py-2 text-danger" href="logout.php">
+                        <i class="bi bi-box-arrow-right me-2"></i>Keluar
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item text-danger" href="delete_akun.php"
+                        onclick="return confirm('Yakin mau hapus akun? Semua data akan hilang!');">
+                        <i class="bi bi-trash me-2"></i>Hapus Akun
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
 
