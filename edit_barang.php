@@ -91,7 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 <div class="mb-3">
                     <label class="form-label">Nama Barang:</label>
-                    <!-- Perhatikan atribut value="..." untuk menampilkan data lama -->
                     <input type="text" class="form-control" name="nama_barang"
                         value="<?php echo $data_barang['nama_barang']; ?>" required>
                 </div>

@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if ($verify_result) {
             $_SESSION['username'] = $user['username'];
             $_SESSION['role']     = $user['role'];
-            header("Location: dashboard.php");
+            header("Location: distributor.php");
             exit();
         } else {
             echo "<script>alert('Password salah!'); window.location='login.php';</script>";
