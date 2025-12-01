@@ -114,7 +114,7 @@ $result = mysqli_query($connection, $sql);
                 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                     <tr>
                         <td><?= $row['id_distributor']; ?></td>
-                        <td><?= $row['nama_pemasok']; ?></td>
+                        <td><?= $row['nama_distributor']; ?></td>
                         <td>
                             <a href="edit_distributor.php?id=<?= $row['id_distributor']; ?>"
                                 class="btn btn-warning btn-sm">Edit</a>

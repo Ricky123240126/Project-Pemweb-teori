@@ -121,7 +121,7 @@ $result = mysqli_query($connection, $sql);
                         <td><?= $row['id_barang']; ?></td>
                         <td><?= $row['nama_barang']; ?></td>
                         <td><?= $row['tanggal_pengiriman']; ?></td>
-                        <td><?= $row['jumlah_pengiriman']; ?></td>
+                        <td><?= $row['jumlah_barang']; ?></td>
                         <td><?= $row['nama_distributor']; ?></td>
                         <td>
                             <a href="edit_pengiriman.php?id=<?= $row['id_pengiriman']; ?>"

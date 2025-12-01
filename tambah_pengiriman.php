@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jumlah = $_POST['jumlah'];
     $id_distributor = $_POST['id_distributor'];
 
-    $sql = "INSERT INTO pengiriman (tanggal_pengiriman, jumlah_pengiriman, id_barang, id_distributor) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO pengiriman (tanggal_pengiriman, jumlah_barang, id_barang, id_distributor) VALUES (?, ?, ?, ?)";
     $stmt = $connection->prepare($sql);
     
     $stmt->bind_param('siii', $tgl, $jumlah, $id_barang, $id_distributor);

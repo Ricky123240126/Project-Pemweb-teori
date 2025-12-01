@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jumlah = $_POST['jumlah'];
     $id_distributor = $_POST['id_distributor'];
 
-    $sql = "UPDATE pengiriman SET tanggal_pengiriman=?, jumlah_pengiriman=?, id_barang=?, id_distributor=? WHERE id_pengiriman=?";
+    $sql = "UPDATE pengiriman SET tanggal_pengiriman=?, jumlah_barang=?, id_barang=?, id_distributor=? WHERE id_pengiriman=?";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param('siiii', $tgl, $jumlah, $id_barang, $id_distributor, $id_pengiriman);
 
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="mb-3">
                     <label>Jumlah:</label>
-                    <input type="number" class="form-control" name="jumlah" value="<?= $data_lama['jumlah_pengiriman'] ?>" required>
+                    <input type="number" class="form-control" name="jumlah" value="<?= $data_lama['jumlah_barang'] ?>" required>
                 </div>
 
                 <div class="mb-3">

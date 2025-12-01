@@ -10,9 +10,9 @@ if (!isset($_SESSION['username'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama_distributor = $_POST['distributor'];
 
-    $sql = "INSERT INTO pemasok (nama_distributor) VALUES (?)";
+    $sql = "INSERT INTO distributor (nama_distributor) VALUES (?)";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('s', $nama_distributor, $alamat_pemasok);
+    $stmt->bind_param('s', $nama_distributor);
 
     if($stmt->execute()){
         echo "<script>alert('Berhasil menambah data distributor!'); window.location='distributor.php';</script>";
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input type="text" class="form-control" name="distributor" id="exampleInputDistributor1">
                     </div>
                     <button type="submit" class="btn btn-primary w-100 fw-bold">Konfirmasi</button>
-                    <a href="pemasok.php" class="btn btn-outline-primary btn-sm w-100 mt-3">
+                    <a href="distributor.php" class="btn btn-outline-primary btn-sm w-100 mt-3">
                         <i class="bi bi-pencil me-1"></i> kembali
                     </a>
                 </form>
